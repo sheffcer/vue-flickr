@@ -3,34 +3,30 @@
     <form>
       <label>
         Search:
-        <input v-model="tag" type="text" placeholder="Введите что-нибудь">
+        <input v-model="tag" type="text" placeholder="Введите что-нибудь" />
       </label>
-      <button type="submit" class="go-button" @click.prevent="search">Search</button>
+      <button type="submit" class="go-button" @click.prevent="search">
+        Search
+      </button>
     </form>
     <p v-if="loading">
       Loading...
     </p>
     <ul v-else>
-      <li v-for="image in images" :key="image.id">{{image}}
-        <img :src="image.url_n" :alt="image.title">
-  <div>
-    <p v-if="image.title">{{image.title}}</p>
-    <p v-else>No Title Found</p>
-    <p>By {{image.ownername}}</p>
-    <section>
-      <p>{{image.datetaken}}</p>
-      <p>Views: {{image.views}}</p>
-    </section>
-  </div>
-      </li>
+      <image-card v-for="image in images" :key="image.id" :image="image" />
     </ul>
   </div>
 </template>
 <script>
 import config from '../../config'
 import axios from 'axios'
+import ImageCard from '@/components/ImageCard'
+
 export default {
   name: 'home',
+  components: {
+    ImageCard
+  },
   data () {
     return {
       tag: '',
@@ -41,12 +37,11 @@ export default {
   methods: {
     search () {
       this.loading = true
-      this.fetchImages()
-        .then((response) => {
-          console.log(response.data)
-          this.images = response.data.photos.photo
-          this.loading = false
-        })
+      this.fetchImages().then(response => {
+        console.log(response.data)
+        this.images = response.data.photos.photo
+        this.loading = false
+      })
       console.log('Searching for: ', this.tag)
       this.tag = ''
     },
