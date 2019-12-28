@@ -42,7 +42,7 @@ export default {
     fetchImages () {
       return axios({
         method: 'get',
-        url: 'https://api.flickr.com/services/rest',
+        url: 'https://api.flickr.com/services/rest/',
         params: {
           method: 'flickr.photos.search',
           api_key: config.api_key,
