@@ -6,7 +6,7 @@
           <span class='screen-reader-only'>Search:</span>
           <input
             v-model='tag'
-            placeholder='Search for photos'
+            placeholder='Поиск фото'
             type='text'
             class='searchbar-input'
           />
@@ -92,7 +92,7 @@ export default {
 }
 .wrapper {
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 992px;
   @media only screen and (max-width: 799px) {
     max-width: 100%;
     margin: 0 1.5rem;
@@ -127,7 +127,7 @@ export default {
 }
 .searchbar-input {
   padding: .5rem 1rem;
-  border-radius: 20px;
+  border-radius: 6px;
   font-size: 1rem;
   border: 1px solid gray;
   min-width: 300px;
@@ -139,10 +139,12 @@ export default {
 .btn {
   padding: .5rem 1rem;
   font-size: 1rem;
-  border-radius: 20px;
+  border-radius: 6px;
   background: transparent;
   border: none;
+  cursor: pointer;
 }
+
 .btn--green {
   background: #42b983;
   color: white;

@@ -22,7 +22,7 @@ export default {
 .image-card {
   width: calc(33% - 1rem);
   margin: .5rem;
-  border-radius: 5px;
+  border-radius: 4px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, .15);
   background: white;
   @media only screen and (max-width: 799px) {
@@ -31,6 +31,9 @@ export default {
   @media only screen and (max-width: 549px) {
     width: 100%;
     margin: .5rem 0;
+  }
+  @media  (min-width: 992px) {
+    width: calc(25% - 1rem);
   }
 }
 .image-card__image {
