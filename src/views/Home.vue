@@ -20,11 +20,11 @@
         </button>
       </form>
     </nav>
-    <div class='wrapper'>
+    <div class='container'>
       <p v-if='loading' class='text-centered'>
         <spinner size='medium' message='Loading...' />
       </p>
-      <ul v-else class='image-card-grid'>
+      <ul v-else class='card-grid'>
         <image-card v-for='image in images' :key='image.id' :image='image' />
       </ul>
     </div>
@@ -90,15 +90,15 @@ export default {
 .text-centered {
   text-align: center;
 }
-.wrapper {
+.container {
   margin: 0 auto;
-  max-width: 992px;
+  max-width: 1100px;
   @media only screen and (max-width: 799px) {
     max-width: 100%;
     margin: 0 1.5rem;
   }
 }
-.image-card-grid {
+.card-grid {
   list-style: none;
   margin: .5rem 0;
   padding: 0;

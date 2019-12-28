@@ -2,12 +2,12 @@
   <li class="image-card">
     <img class="image-card__image" :src="image.url_n" :alt="image.title">
     <div class="image-card__body">
-      <p v-if="image.title" class="image-title">{{image.title}}</p>
+      <p v-if="image.title" class="image-card__title">{{image.title}}</p>
       <p v-else class="image-title">No Title Found</p>
-      <p class="image-owner">By {{image.ownername}}</p>
-      <section class="image-date-view-wrapper">
-        <p class="image-date">{{image.datetaken}}</p>
-        <p class="image-views">Views: {{image.views}}</p>
+      <p class="image-card__owner">By {{image.ownername}}</p>
+      <section class="image-card__wrapper">
+        <p class="image-card__date">{{image.datetaken}}</p>
+        <p class="image-card__views">Views: {{image.views}}</p>
       </section>
     </div>
   </li>
@@ -45,27 +45,27 @@ export default {
 .image-card__body {
   padding: .5rem 1rem 1rem;
 }
-.image-title {
+.image-card__title {
   font-weight: bold;
   margin: 0;
 }
-.image-owner {
+.image-card__owner {
   margin-top: 0;
   font-size: .8rem;
 }
-.image-title,
-.image-owner {
+.image-card__title,
+.image-card__owner {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.image-date-view-wrapper {
+.image-card__wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.image-date,
-.image-views {
+.image-card__date,
+.image-card__views {
   margin-bottom: 0;
   font-size: .8rem;
 }
