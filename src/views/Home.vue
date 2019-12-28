@@ -3,7 +3,7 @@
     <form>
       <label>
         Search:
-        <input v-model="tag" type="text">
+        <input v-model="tag" type="text" placeholder="Введите что-нибудь">
       </label>
       <button type="submit" class="go-button" @click.prevent="search">Search</button>
     </form>
@@ -11,7 +11,18 @@
       Loading...
     </p>
     <ul v-else>
-      <li v-for="image in images" :key="image.id">{{image}}</li>
+      <li v-for="image in images" :key="image.id">{{image}}
+        <img :src="image.url_n" :alt="image.title">
+  <div>
+    <p v-if="image.title">{{image.title}}</p>
+    <p v-else>No Title Found</p>
+    <p>By {{image.ownername}}</p>
+    <section>
+      <p>{{image.datetaken}}</p>
+      <p>Views: {{image.views}}</p>
+    </section>
+  </div>
+      </li>
     </ul>
   </div>
 </template>
@@ -22,7 +33,7 @@ export default {
   name: 'home',
   data () {
     return {
-      tag: 'Введите что-нибудь',
+      tag: '',
       loading: false,
       images: []
     }
@@ -33,7 +44,7 @@ export default {
       this.fetchImages()
         .then((response) => {
           console.log(response.data)
-          // this.images = response.data.photos.photo
+          this.images = response.data.photos.photo
           this.loading = false
         })
       console.log('Searching for: ', this.tag)
