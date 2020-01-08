@@ -53,27 +53,24 @@ export default {
   computed: {
     cleanImages () {
       return this.images.filter(image => image.url_n)
+    },
+    isTagEmpty () {
+      return !this.tag || this.tag.length === 0
     }
   },
   methods: {
     search () {
-      this.loading = true
-      this.fetchImages().then(response => {
-        if (response.data.stat === 'ok') {
-          console.log('СТАТУС: ' + response.data.stat)
+      if (!this.isTagEmpty) {
+        this.loading = true
+        this.fetchImages().then(response => {
+          // this.loading = true
           console.log(response.data)
           this.images = response.data.photos.photo
-          this.loading = false
           console.log('Searching for: ', this.tag)
-          this.tag = ''
-        } else {
-          this.tag = 'Введите что нибудь'
           this.loading = false
-          console.log('СТАТУС: ' + response.data.stat)
-        }
-      })
-      // console.log('Searching for: ', this.tag)
-      // this.tag = ''
+          this.tag = ''
+        })
+      }
     },
     fetchImages () {
       return axios({
