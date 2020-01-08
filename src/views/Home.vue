@@ -115,7 +115,7 @@ export default {
   margin: .5rem 0;
   padding: 0;
   display: flex;
-  align-items: flex-start;
+  // align-items: flex-start;
   flex-wrap: wrap;
 }
 .navbar {
