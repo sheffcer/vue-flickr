@@ -6,16 +6,22 @@
       <p v-else class="image-title">No Title Found</p>
       <p class="image-card__owner">By {{image.ownername}}</p>
       <section class="image-card__wrapper">
-        <p class="image-card__date">{{image.datetaken}}</p>
+        <p class="image-card__date">{{image.datetaken | moment}}</p>
         <p class="image-card__views">Views: {{image.views}}</p>
       </section>
     </div>
   </li>
 </template>
 <script>
+import moment from 'moment'
 export default {
   name: 'ImageCard',
-  props: [ 'image' ]
+  props: [ 'image' ],
+  filters: {
+    moment (date) {
+      return moment(date).format('Do MMMM YYYY')
+    }
+  }
 }
 </script>
 <style lang="scss">

@@ -25,7 +25,7 @@
         <spinner size='medium' message='Loading...' />
       </p>
       <ul v-else class='card-grid'>
-        <image-card v-for='image in images' :key='image.id' :image='image' />
+        <image-card v-for='image in cleanImages' :key='image.id' :image='image' />
       </ul>
     </div>
   </div>
@@ -50,16 +50,30 @@ export default {
       images: []
     }
   },
+  computed: {
+    cleanImages () {
+      return this.images.filter(image => image.url_n)
+    }
+  },
   methods: {
     search () {
       this.loading = true
       this.fetchImages().then(response => {
-        console.log(response.data)
-        this.images = response.data.photos.photo
-        this.loading = false
+        if (response.data.stat === 'ok') {
+          console.log('СТАТУС: ' + response.data.stat)
+          console.log(response.data)
+          this.images = response.data.photos.photo
+          this.loading = false
+          console.log('Searching for: ', this.tag)
+          this.tag = ''
+        } else {
+          this.tag = 'Введите что нибудь'
+          this.loading = false
+          console.log('СТАТУС: ' + response.data.stat)
+        }
       })
-      console.log('Searching for: ', this.tag)
-      this.tag = ''
+      // console.log('Searching for: ', this.tag)
+      // this.tag = ''
     },
     fetchImages () {
       return axios({
@@ -73,7 +87,8 @@ export default {
           page: 1,
           format: 'json',
           nojsoncallback: 1,
-          per_page: 30
+          per_page: 100,
+          tag_mode: 'any'
         }
       })
     }
