@@ -1,5 +1,5 @@
 <template>
-  <li class="image-card">
+  <li class="image-card" @click="showGallery">
     <img class="image-card__image" :src="image.url_n" :alt="image.title">
     <div class="image-card__body">
       <p v-if="image.title" class="image-card__title">{{image.title}}</p>
@@ -21,7 +21,13 @@ export default {
     moment (date) {
       return moment(date).format('Do MMMM YYYY')
     }
+  },
+  methods: {
+    showGallery (evt) {
+      console.log(evt)
+    }
   }
+
 }
 </script>
 <style lang="scss">
