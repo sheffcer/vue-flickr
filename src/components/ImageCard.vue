@@ -1,5 +1,5 @@
 <template>
-  <li class="image-card" @click="showGallery">
+  <li class="image-card">
     <img class="image-card__image" :src="image.url_n" :alt="image.title">
     <div class="image-card__body">
       <p v-if="image.title" class="image-card__title">{{image.title}}</p>
@@ -19,7 +19,9 @@ export default {
   props: [ 'image' ],
   filters: {
     moment (date) {
-      return moment(date).format('Do MMMM YYYY')
+      console.log(moment.locale())
+      moment.locale('ru')
+      return moment(date).format('LL')
     }
   },
   methods: {

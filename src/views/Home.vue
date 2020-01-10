@@ -24,10 +24,12 @@
       <p v-if='loading' class='text-centered'>
         <spinner size='medium' message='Loading...' />
       </p>
-      <ul v-else class='card-grid'>
+      <ul v-else class='card-grid' @click.prevent="showGallery">
         <image-card v-for='image in cleanImages' :key='image.id' :image='image' />
       </ul>
     </div>
+    <jw-pagination :items="cleanImages" @changePage="onChangePage"></jw-pagination>
+    <overlay-card/>
   </div>
 </template>
 
@@ -36,18 +38,28 @@ import config from '../../config'
 import axios from 'axios'
 import Spinner from 'vue-simple-spinner'
 import ImageCard from '@/components/ImageCard'
+import OverlayCard from '@/components/OverlayCard'
+import JwPagination from 'jw-vue-pagination'
+// Vue.component('jw-pagination', JwPagination);
 
 export default {
   name: 'home',
   components: {
     ImageCard,
-    Spinner
+    OverlayCard,
+    Spinner,
+    JwPagination
   },
   data () {
     return {
       tag: '',
       loading: false,
-      images: []
+      images: [],
+      slectedFile: '',
+      totalImages: 0,
+      perPage: 12,
+      currentPage: 11,
+      pageOfItems: []
     }
   },
   computed: {
@@ -62,17 +74,30 @@ export default {
     search () {
       if (!this.isTagEmpty) {
         this.loading = true
-        this.fetchImages().then(response => {
+        this.fetchImages(this.currentPage).then(response => {
           // this.loading = true
           console.log(response.data)
           this.images = response.data.photos.photo
+          this.totalPhotos = response.data.photos.total
+          this.currentPage = response.data.photos.page
           console.log('Searching for: ', this.tag)
+          console.log('всего фото: ' + this.totalPhotos + ' текущая страница: ' + this.currentPage)
           this.loading = false
           this.tag = ''
         })
       }
     },
-    fetchImages () {
+    onChangePage (pageOfItems) {
+      // update page of items
+      this.pageOfItems = pageOfItems
+    },
+    showGallery (evt) {
+      console.log(evt)
+      // let image = evt.path[0]
+      // this.slectedFile = evt.target
+      // console.log(this.slectedFile)
+    },
+    fetchImages (page) {
       return axios({
         method: 'get',
         url: 'https://api.flickr.com/services/rest/',
@@ -81,10 +106,10 @@ export default {
           api_key: config.api_key,
           tags: this.tag,
           extras: 'url_n, owner_name, date_taken, views',
-          page: 1,
+          page: page,
           format: 'json',
           nojsoncallback: 1,
-          per_page: 30,
+          per_page: this.perPage,
           tag_mode: 'any'
         }
       })
