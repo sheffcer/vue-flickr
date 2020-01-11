@@ -24,12 +24,16 @@
       <p v-if='loading' class='text-centered'>
         <spinner size='medium' message='Loading...' />
       </p>
-      <ul v-else class='card-grid' @click.prevent="showGallery">
+      <ul v-else class='card-grid' @click.prevent='showGallery'>
         <image-card v-for='image in cleanImages' :key='image.id' :image='image' />
       </ul>
     </div>
-    <jw-pagination :items="cleanImages" @changePage="onChangePage"></jw-pagination>
-    <overlay-card/>
+    <!-- <overlay-card/> -->
+      <div class='clearfix btn-group col-md-2 offset-md-5'>
+        <button type='button' class='btn btn-sm btn-outline-secondary' v-if='page != 1' @click='page--'> before </button>
+        <button type='button' class='btn btn-sm btn-outline-secondary' v-for='pageNumber in pages.slice(page-1, page+5)' @click='page = pageNumber' :key='pageNumber.id'> {{pageNumber}} </button>
+        <button type='button' @click='page++' v-if='page < pages.length' class='btn btn-sm btn-outline-secondary'> next </button>
+      </div>
   </div>
 </template>
 
@@ -38,17 +42,14 @@ import config from '../../config'
 import axios from 'axios'
 import Spinner from 'vue-simple-spinner'
 import ImageCard from '@/components/ImageCard'
-import OverlayCard from '@/components/OverlayCard'
-import JwPagination from 'jw-vue-pagination'
-// Vue.component('jw-pagination', JwPagination);
+// import OverlayCard from '@/components/OverlayCard'
 
 export default {
   name: 'home',
   components: {
     ImageCard,
-    OverlayCard,
-    Spinner,
-    JwPagination
+    // OverlayCard,
+    Spinner
   },
   data () {
     return {
@@ -58,8 +59,10 @@ export default {
       slectedFile: '',
       totalImages: 0,
       perPage: 12,
-      currentPage: 11,
-      pageOfItems: []
+      // page: 2,
+      pages: [],
+      totalPages: '',
+      page: 1
     }
   },
   computed: {
@@ -68,24 +71,46 @@ export default {
     },
     isTagEmpty () {
       return !this.tag || this.tag.length === 0
+    },
+    displayedImages () {
+      return this.paginate(this.images)
     }
   },
   methods: {
-    search () {
+    search (page) {
       if (!this.isTagEmpty) {
         this.loading = true
-        this.fetchImages(this.currentPage).then(response => {
+        this.fetchImages(this.page).then(response => {
           // this.loading = true
           console.log(response.data)
           this.images = response.data.photos.photo
           this.totalPhotos = response.data.photos.total
-          this.currentPage = response.data.photos.page
+          this.page = response.data.photos.page
+          this.totalPages = response.data.photos.pages
           console.log('Searching for: ', this.tag)
-          console.log('всего фото: ' + this.totalPhotos + ' текущая страница: ' + this.currentPage)
+          console.log('всего фото: ' + this.totalPhotos + ' текущая страница: ' + this.page + ' Всего страниц: ' + this.pages)
           this.loading = false
-          this.tag = ''
+          // this.tag = ''
+          for (let i = 1; i <= this.totalPages; i++) {
+            this.pages.push(i)
+          }
+          console.log(this.pages)
         })
       }
+    },
+    setPages () {
+      // this.totalPages = this.pages
+      for (let i = 1; i <= this.totalPages; i++) {
+        this.pages.push(i)
+      }
+      console.log(this.pages)
+    },
+    paginate (images) {
+      let page = this.page
+      let perPage = this.perPage
+      let from = (page * perPage) - perPage
+      let to = (page * perPage)
+      return images.slice(from, to)
     },
     onChangePage (pageOfItems) {
       // update page of items
