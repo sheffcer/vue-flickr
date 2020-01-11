@@ -30,9 +30,9 @@
     </div>
     <!-- <overlay-card/> -->
       <div class='clearfix btn-group col-md-2 offset-md-5'>
-        <button type='button' class='btn btn-sm btn-outline-secondary' v-if='page != 1' @click='page--'> before </button>
-        <button type='button' class='btn btn-sm btn-outline-secondary' v-for='pageNumber in pages.slice(page-1, page+5)' @click='page = pageNumber' :key='pageNumber.id'> {{pageNumber}} </button>
-        <button type='button' @click='page++' v-if='page < pages.length' class='btn btn-sm btn-outline-secondary'> next </button>
+        <button type='button' class='btn btn-sm btn-outline-secondary' v-if='page != 1' @click='page--' v-on:click='search'> туда </button>
+        <button type='button' class='btn btn-sm btn-outline-secondary' v-for='pageNumber in pages.slice(page-1, page+5)' @click='page = pageNumber' v-on:click='search' :key='pageNumber.id'> {{pageNumber}} </button>
+        <button type='button' @click='page++' v-if='page < pages.length' v-on:click='search' class='btn btn-sm btn-outline-secondary'> сюда </button>
       </div>
   </div>
 </template>
@@ -58,7 +58,7 @@ export default {
       images: [],
       slectedFile: '',
       totalImages: 0,
-      perPage: 12,
+      perPage: 8,
       // page: 2,
       pages: [],
       totalPages: '',
@@ -94,7 +94,7 @@ export default {
           for (let i = 1; i <= this.totalPages; i++) {
             this.pages.push(i)
           }
-          console.log(this.pages)
+          // console.log(this.pages)
         })
       }
     },
