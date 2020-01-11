@@ -15,6 +15,7 @@
           type='submit'
           class='btn btn--green btn--go'
           @click.prevent='search'
+          v-on:keyup.13='search'
         >
           Go
         </button>
