@@ -2,9 +2,9 @@
   <li class="image-card">
     <img class="image-card__image" :src="image.url_n" :alt="image.title">
     <div class="image-card__body">
-      <p v-if="image.title" class="image-card__title">{{image.title}}</p>
+      <p v-if="image.title" class="image-card__title">{{image.title  | readMore(25, '...') }}</p>
       <p v-else class="image-title">No Title Found</p>
-      <p class="image-card__owner">By {{image.ownername}}</p>
+      <p class="image-card__owner">By {{image.ownername | readMore(40, '...')}}</p>
       <section class="image-card__wrapper">
         <p class="image-card__date">{{image.datetaken | moment}}</p>
         <p class="image-card__views">Views: {{image.views}}</p>
@@ -22,6 +22,19 @@ export default {
       console.log(moment.locale())
       moment.locale('ru')
       return moment(date).format('LL')
+    },
+    Upper (value) {
+      return value.toUpperCase()
+    },
+    Lower (value) {
+      return value.toLowerCase()
+    },
+    readMore (text, length, suffix) {
+      if (text.length >= length) {
+        return text.substring(0, length) + suffix
+      } else {
+        return text
+      }
     }
   },
   methods: {
